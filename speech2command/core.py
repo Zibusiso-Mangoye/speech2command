@@ -1,30 +1,26 @@
-import speech_recognition as sr
-import gtts
-from playsound import playsound
 import os
-from datetime import datetime
-from notion import NotionClient
 
-r = sr.Recognizer()
+from gtts import gTTS
+import speech_recognition as sr
+from playsound import playsound
 
-token = "YOUR NOTION TOKEN HERE"
-database_id = "YOUR NOTION DATABASE_ID HERE"
 
-client = NotionClient(token, database_id)
-
-ACTIVATION_COMMAND = "hey sam"
 class S2CClient:
+    def __init__(self) -> None:
+        self.recogniser = sr.Recognizer()
+        playsound("speech2command\data\starting_sound.mp3")
     
-    def get_audio(self):
+    def get_audio(self) -> bytes:
         with sr.Microphone() as source:
-            print("Say something")
-            audio = r.listen(source)
+            s2c_welcome_message = "Hello sir, waiting for command"
+            self.play_sound(s2c_welcome_message)
+            audio = self.recogniser.listen(source)
         return audio
 
     def audio_to_text(self, audio):
         text = ""
         try:
-            text = r.recognize_google(audio)
+            text = self.recogniser.recognize_google(audio)
         except sr.UnknownValueError:
             print("Speech recognition could not understand audio")
         except sr.RequestError:
@@ -33,7 +29,7 @@ class S2CClient:
 
     def play_sound(self, text):
         try:
-            tts = gtts.gTTS(text)
+            tts = gTTS(text, slow=True)
             tempfile = "./temp.mp3"
             tts.save(tempfile)
             playsound(tempfile)
