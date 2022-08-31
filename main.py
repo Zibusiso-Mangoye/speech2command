@@ -10,11 +10,12 @@ from settings.load_config import load_config
 from speech2command.core import S2CClient
 
 def main():
+    
     client = S2CClient()
     audio_input = client.get_audio()
     command = client.audio_to_text(audio_input)
-    print(command)
-        
+    
+    result = client.execute(command)        
                 
                 
 if __name__ == "__main__":

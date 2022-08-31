@@ -29,10 +29,17 @@ class S2CClient:
 
     def play_sound(self, text):
         try:
-            tts = gTTS(text, slow=True)
+            tts = gTTS(text, slow=False)
             tempfile = "./temp.mp3"
             tts.save(tempfile)
             playsound(tempfile)
             os.remove(tempfile)
         except AssertionError:
             print("could not play sound")
+            
+    def execute(self, command) -> None:
+
+        if 'read' in command:
+            print("Reading...")
+            
+        return
