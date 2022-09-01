@@ -13,10 +13,13 @@ def main():
     
     client = S2CClient()
     audio_input = client.get_audio()
-    command = client.audio_to_text(audio_input)
-    
-    result = client.execute(command)        
-                
+    command = client.audio_to_text(audio_input)  
+          
+    from plugins import Base
+
+    for plugin in Base.plugins:
+        plugin_instance = plugin()
+        plugin_instance.execute(command)
                 
 if __name__ == "__main__":
     main()
